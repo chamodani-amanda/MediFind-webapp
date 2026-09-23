@@ -1,0 +1,647 @@
+MEDIFIND APPLICATION - COMPLETE FUNCTIONS AND FEATURES SCRIPT
+======================================================================
+
+1. INTRODUCTION
+---------------
+
+MediFind is a full-stack medicine availability, pharmacy discovery, and
+reservation system. Its main purpose is to help customers find medicines
+before travelling to a pharmacy, identify registered pharmacies near their
+current location, reserve available medicine, receive reservation updates,
+and navigate to the selected pharmacy.
+
+The system also provides a pharmacy-owner portal for managing pharmacy
+details, medicine inventory, customer reservations, stock quantities, CSV
+imports, and pharmacy ratings.
+
+MediFind has three main roles:
+
+1. Customer
+2. Pharmacy owner
+3. Administrator
+
+
+2. TECHNOLOGY AND APPLICATION STRUCTURE
+---------------------------------------
+
+The frontend is built with HTML, CSS, and JavaScript. It provides responsive
+interfaces for desktop and mobile devices.
+
+The backend is built with Node.js and Express. It provides REST API endpoints
+for authentication, users, medicines, pharmacies, inventory, reservations,
+reviews, notifications, and CSV imports.
+
+MongoDB stores the application records, including:
+
+- User accounts
+- Pharmacy profiles
+- Medicine information
+- Pharmacy inventory and quantities
+- Reservations
+- Notifications
+- Inventory import history
+- Pharmacy ratings and review counts
+
+
+3. ACCOUNT REGISTRATION AND AUTHENTICATION
+------------------------------------------
+
+MediFind supports separate customer and pharmacy-owner accounts.
+
+Customer registration collects:
+
+- Full name
+- Email address
+- Phone number
+- Password
+- Preferred language
+
+Pharmacy registration creates the owner account and pharmacy profile together.
+It collects:
+
+- Owner details
+- Pharmacy name
+- Pharmacy address
+- City
+- Contact number
+- Opening hours
+- Latitude and longitude
+
+During sign-in, the user can select whether they are signing in as a customer
+or pharmacy owner. After successful authentication, the system opens the
+correct portal for that account type.
+
+Authentication features include:
+
+- Secure password hashing with bcrypt
+- JWT access-token authentication
+- Role-based authorization
+- Protected customer, pharmacy-owner, and administrator endpoints
+- Login request rate limiting
+- Logout functionality
+- Session restoration after refreshing the page
+- Guest access for limited public browsing
+
+
+4. CUSTOMER HOME AND MEDICINE SEARCH
+------------------------------------
+
+The customer home page provides a medicine-search interface.
+
+Customers can:
+
+- Type any medicine name into the search field
+- Search using a brand name or generic name
+- Receive medicine suggestions while typing
+- Select a suggested medicine
+- Submit a search using the Search Medicine button
+- Reuse recently searched medicine names
+- Refresh or detect their live location
+
+The system loads matching registered pharmacies that currently list the
+searched medicine. It does not display unregistered pharmacies from a public
+map search.
+
+
+5. SEARCH RESULTS AND FILTERING
+-------------------------------
+
+The pharmacy search-results page displays pharmacies that stock the requested
+medicine.
+
+Each result can display:
+
+- Pharmacy name
+- Pharmacy rating
+- Total review count
+- Address
+- Distance from the customer
+- Medicine name
+- Generic name
+- Dosage and medicine form
+- Manufacturer
+- Stock status
+- Available quantity
+- Unit price and currency
+- Last stock-update time
+
+Customers can filter or sort results using:
+
+- In-stock status
+- Low-stock status
+- Out-of-stock status
+- Distance
+- Maximum price
+- No-prescription requirement
+- Nearest pharmacy
+- Highest-rated pharmacy
+- Lowest price
+- Highest stock
+
+Customers can also clear filters and perform another medicine or location
+search.
+
+
+6. PHARMACY DETAILS
+-------------------
+
+Selecting View Details opens the selected pharmacy's detail page.
+
+The page can show:
+
+- Pharmacy name
+- Average star rating
+- Review count
+- Address
+- Phone number
+- Opening hours
+- Distance
+- Requested medicine availability
+- Available quantity
+- Stock status
+- Complete public store inventory
+- Medicine category
+- Generic name
+- Manufacturer
+- Dosage and form
+- Price
+- Prescription requirement
+- Pharmacy-specific medicine notes
+
+From this page, the customer can reserve the medicine, call the pharmacy, or
+open the pharmacy on the map.
+
+
+7. LIVE LOCATION AND PHARMACY MAP
+---------------------------------
+
+MediFind can request the customer's live location from the device through the
+browser Geolocation API. Location access requires browser permission and
+HTTPS or localhost.
+
+The map displays:
+
+- The customer's live location
+- Registered pharmacy markers
+- The currently selected pharmacy
+- Pharmacy information popups
+- A highlighted selected pharmacy card and marker
+- The route from the customer to the selected pharmacy
+
+When the customer selects a pharmacy:
+
+- That pharmacy becomes the active selection
+- Its marker is highlighted
+- Its popup opens
+- The map frames the customer and pharmacy together
+- A road route is requested
+- Distance and estimated road time are displayed when available
+- A direct connection is shown if the road-routing service is unavailable
+
+Selecting another pharmacy cancels the previous route request so an older
+route cannot overwrite the new selection.
+
+The Open in Google Maps control generates directions using the selected
+pharmacy's saved latitude and longitude. When live coordinates are available,
+they are also included as the route origin.
+
+
+8. MEDICINE RESERVATION
+-----------------------
+
+A signed-in customer can reserve an available medicine from a selected
+pharmacy.
+
+The reservation form includes:
+
+- Medicine and pharmacy information
+- Quantity controls
+- Patient or collector name
+- Contact number
+- Editable collection date and time
+- Confirmation checkbox
+- Confirm Reservation button
+
+The collection time must be a valid future date and time.
+
+When a reservation is created:
+
+- The backend verifies sufficient stock
+- The reserved quantity is deducted atomically
+- A unique reservation ID is created
+- The reservation begins in Pending status
+- The pharmacy owner receives a notification
+- The customer sees a reservation confirmation page
+
+
+9. RESERVATION STATUS WORKFLOW
+------------------------------
+
+Reservations follow this status sequence:
+
+1. Requested or Pending
+2. Confirmed
+3. Ready for Collection
+4. Collected or Completed
+
+A reservation may also become Rejected or Cancelled.
+
+The customer reservation page contains:
+
+- Active tab
+- Completed tab
+- Cancelled tab
+- Record count for each tab
+- Reservation progress tracker
+- Medicine and pharmacy details
+- Reservation ID
+- Collection time
+- Current status
+
+Active reservations can be cancelled when their current state allows it.
+Cancellation or pharmacy rejection restores the reserved medicine quantity to
+inventory.
+
+The Completed and Cancelled tabs retain their historical records so users can
+visit them later.
+
+
+10. PHARMACY REVIEW AND RATING
+------------------------------
+
+After a reservation is marked Collected, its Completed card no longer displays
+the View Details and Directions buttons. It displays Review Pharmacy instead.
+
+The customer can select a rating from one to five stars.
+
+Review rules include:
+
+- Only the customer who owns the reservation can submit the review
+- Only collected reservations can be reviewed
+- Each reservation can be reviewed only once
+- The rating must be a whole number from one to five
+
+After submission:
+
+- The rating is stored on the completed reservation
+- The pharmacy's review count increases
+- The pharmacy's average rating is recalculated
+- The new rating appears in search results
+- The new rating appears on the pharmacy details page
+- The new rating appears on the pharmacy-owner dashboard
+
+
+11. CUSTOMER NOTIFICATIONS
+--------------------------
+
+The notification bell shows reservation-related updates.
+
+Notifications can include:
+
+- Reservation accepted
+- Medicine ready for collection
+- Medicine collected
+- Reservation rejected
+- Reservation cancelled
+
+The notification panel supports:
+
+- Opening and closing the panel
+- Viewing unread notifications
+- Marking all notifications as read
+- Updating the unread notification badge
+
+Notifications are stored by the backend and are not limited to temporary
+browser messages.
+
+
+12. CUSTOMER PROFILE
+--------------------
+
+The customer profile page allows the signed-in user to view and edit:
+
+- Name
+- Email display
+- Phone number
+- Preferred language
+- Location-access preference
+- Profile photograph
+
+The Change Photo button opens the device file selector. The selected image is
+validated, previewed, and displayed in the profile card and header avatar.
+
+The profile also includes Save Changes, Logout, and Back controls.
+
+
+13. PHARMACY-OWNER OVERVIEW
+---------------------------
+
+After a pharmacy owner signs in, the Pharmacy Portal opens.
+
+The overview displays important statistics such as:
+
+- Total medicines
+- Available stock lines
+- Low-stock medicines
+- Out-of-stock medicines
+- Pending reservation requests
+- Pharmacy rating
+
+The pharmacy portal contains separate navigation sections for:
+
+- Overview
+- Inventory
+- Reservations
+- Pharmacy Details
+
+
+14. PHARMACY INVENTORY MANAGEMENT
+---------------------------------
+
+The Inventory page displays all medicines registered for the signed-in
+owner's pharmacy.
+
+Each inventory item can show:
+
+- Medicine name
+- Generic name
+- Category
+- Dosage
+- Form
+- Manufacturer
+- Description
+- Prescription requirement
+- Current quantity
+- Stock status
+- Unit price
+- Currency
+- Notes
+- Last-updated time
+
+Pharmacy owners can:
+
+- Update medicine quantity
+- Edit all medicine details
+- Change price and currency
+- Change pharmacy-specific notes
+- Mark whether a prescription is required
+- Remove a medicine from their pharmacy inventory
+
+Stock status is calculated from quantity and can appear as In Stock, Low
+Stock, or Out of Stock.
+
+
+15. PHARMACY INVENTORY SEARCH
+-----------------------------
+
+The Inventory section contains a search bar scoped to the signed-in pharmacy's
+current inventory.
+
+It can search the displayed stock using:
+
+- Medicine name
+- Generic name
+- Category
+- Manufacturer
+- Other displayed medicine information
+
+Filtering happens immediately while typing. The page displays the number of
+matching medicines and shows a clear empty message when no inventory item
+matches the search.
+
+
+16. PHARMACY CSV INVENTORY IMPORT
+---------------------------------
+
+Pharmacy owners can upload a CSV file to add new medicines or update existing
+inventory records.
+
+The CSV workflow provides:
+
+- Downloadable CSV template
+- File-type validation
+- Maximum five-megabyte file size
+- Dry-run validation and preview
+- Row-level validation errors
+- Confirmation before final import
+- Progress feedback
+- Inserted and updated record totals
+- Automatic inventory refresh
+- Recent import history
+
+Supported CSV information includes medicine identity, name, generic name,
+category, dosage, form, manufacturer, description, prescription requirement,
+quantity, price, currency, and pharmacy notes.
+
+
+17. PHARMACY RESERVATION MANAGEMENT
+-----------------------------------
+
+The pharmacy owner can view reservations made for pharmacies connected to the
+owner's account.
+
+The owner can:
+
+- View customer and medicine information
+- View requested quantity and collection time
+- Confirm pending reservations
+- Reject reservations
+- Mark confirmed reservations as Ready
+- Mark collected medicine as Collected
+
+Status changes automatically create customer notifications. Rejected or
+cancelled reservations restore stock.
+
+
+18. PHARMACY DETAILS MANAGEMENT
+-------------------------------
+
+The Pharmacy Details section allows an owner to edit:
+
+- Pharmacy name
+- Address
+- City
+- Contact number
+- Opening hours
+- Latitude
+- Longitude
+
+The owner can use the current device location or select the pharmacy entrance
+on an interactive coordinate picker. Saved coordinates are used for customer
+map markers and directions.
+
+The owner can also change the profile photograph used in the account header
+and profile display.
+
+
+19. MULTILINGUAL INTERFACE
+--------------------------
+
+MediFind supports:
+
+- English
+- Sinhala
+- Tamil
+
+The selected language is applied across navigation, buttons, forms, profile
+pages, medicine search, maps, reservations, notifications, pharmacy pages,
+inventory search, reviews, accessibility labels, placeholders, titles, and
+dropdown options.
+
+Language selection is stored locally so the preference remains available
+after refreshing the application. Switching back to English restores the
+original English interface without mixed-language labels.
+
+
+20. ACCESSIBILITY FEATURES
+--------------------------
+
+Accessibility features include:
+
+- Three text-size levels: normal, large, and extra large
+- Page-wide text scaling
+- Light and dark color themes
+- Persistent text-size and theme preferences
+- High-contrast focus indicators
+- Keyboard-accessible buttons and forms
+- Accessible field labels
+- Screen-reader labels
+- Live status regions for changing information
+- Minimum touch-target sizes
+- Skip-to-content navigation
+- Responsive mobile layouts
+- Clear status colors with accompanying text
+
+Dark mode covers forms, cards, inventory, reservations, notifications, maps,
+popups, pharmacy dashboards, and navigation controls.
+
+
+21. NAVIGATION AND INTERACTION
+------------------------------
+
+The application provides reliable navigation for:
+
+- Header tabs
+- Back buttons
+- Search results
+- Pharmacy details
+- Map view
+- Reservation pages
+- Profile page
+- Pharmacy dashboard sections
+- Logout
+
+The Back control uses application route history and a safe fallback route.
+Specialized actions such as directions, notifications, reservation tabs, and
+location controls use dedicated handlers to prevent navigation conflicts.
+
+
+22. LOADING, VALIDATION, AND ERROR FEEDBACK
+------------------------------------------
+
+MediFind provides user feedback through:
+
+- Delayed loading indicator for API requests
+- Button-disabled states during submissions
+- Success and error toast messages
+- Request timeout handling
+- Connection-error messages
+- Form validation
+- Empty-result messages
+- Map-loading and map-error messages
+- CSV row-validation feedback
+
+The delayed loader avoids flashing for fast requests while still informing the
+user when a network operation takes longer.
+
+
+23. ADMINISTRATOR AND DATA IMPORT FEATURES
+------------------------------------------
+
+Administrator-protected CSV endpoints support bulk import of:
+
+- Medicines
+- Pharmacies
+- Pharmacy inventory
+
+Imports support validation-only dry runs and upsert records using stable public
+IDs. This means an existing record can be updated without creating an unwanted
+duplicate.
+
+Administrators can also obtain database collection counts through the import
+summary endpoint.
+
+
+24. SECURITY AND DATA PROTECTION
+--------------------------------
+
+Security controls include:
+
+- bcrypt password hashing
+- JWT bearer authentication
+- Role-based endpoint permissions
+- Pharmacy ownership verification
+- Reservation ownership verification
+- One-review-per-completed-reservation enforcement
+- Request rate limiting
+- Restricted CORS origins
+- Helmet HTTP security headers
+- Request body and CSV size limits
+- Input validation
+- Protected stock and pharmacy update operations
+- Production error responses without server stack traces
+
+
+25. COMPLETE CUSTOMER WORKFLOW
+------------------------------
+
+The complete customer journey is:
+
+1. Register or sign in.
+2. Enter a medicine name.
+3. Select a suggestion or submit the search.
+4. Allow live-location access.
+5. Compare registered pharmacies and stock information.
+6. Filter or sort the results.
+7. Open a pharmacy's details.
+8. Review its complete inventory and availability.
+9. Select the pharmacy on the map.
+10. View the route from the live location.
+11. Reserve the medicine with an editable collection time.
+12. Follow reservation progress and notifications.
+13. Collect the medicine.
+14. Find the record in Completed reservations.
+15. Submit a one-to-five-star pharmacy review.
+
+
+26. COMPLETE PHARMACY-OWNER WORKFLOW
+------------------------------------
+
+The complete pharmacy-owner journey is:
+
+1. Register the owner and pharmacy together or sign in.
+2. Review dashboard totals and stock warnings.
+3. Open Inventory and search current medicines.
+4. Update stock or edit medicine information.
+5. Add or update medicines through the CSV workflow.
+6. Review import history.
+7. Open Reservations and respond to customer requests.
+8. Confirm, reject, mark ready, or mark collected.
+9. Edit pharmacy contact details and coordinates.
+10. Maintain accurate coordinates for customer navigation.
+11. Monitor the pharmacy rating as verified completed-reservation reviews are
+    submitted.
+
+
+27. CONCLUSION
+--------------
+
+MediFind combines medicine discovery, live pharmacy stock, location-aware
+navigation, reservations, notifications, inventory management, and verified
+pharmacy reviews in one system. Customers receive clear information before
+travelling, while pharmacy owners receive practical tools for maintaining
+stock and managing medicine collection requests.
+
+The system is responsive, multilingual, accessible, role-protected, and backed
+by persistent MongoDB data and a structured REST API.
+

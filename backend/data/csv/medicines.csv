@@ -1,0 +1,6 @@
+medicineId,name,genericName,category,description,manufacturer,dosage,image
+MED-PARA-500,Paracetamol,Acetaminophen,Pain Relief,"Temporary relief of mild pain and fever",State Pharmaceuticals,500 mg,
+MED-AMOX-250,Amoxicillin,Amoxicillin,Antibiotic,"Prescription antibiotic for susceptible bacterial infections",Ceylon Pharma,250 mg,
+MED-CET-10,Cetirizine,Cetirizine Hydrochloride,Allergy,"Antihistamine for common allergy symptoms",HealthCare Labs,10 mg,
+MED-IBU-400,Ibuprofen,Ibuprofen,Pain Relief,"Anti-inflammatory pain and fever relief",LifePlus,400 mg,
+MED-VITC-500,Vitamin C,Ascorbic Acid,Vitamins,"Vitamin C dietary supplement",Wellness Labs,500 mg,

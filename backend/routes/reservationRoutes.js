@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { createReservation, deleteReservation, pharmacyReservations, reviewReservation, updateReservationStatus, userReservations } from '../controllers/reservationController.js';
+import { permit, protect } from '../middleware/auth.js';
+import { requireFields } from '../middleware/validate.js';
+const router = Router();
+router.use(protect);
+router.post('/', permit('customer'), requireFields('pharmacyId', 'medicineId', 'quantity', 'collectionTime'), createReservation);
+router.get('/user', permit('customer', 'admin'), userReservations);
+router.get('/pharmacy', permit('pharmacyOwner', 'admin'), pharmacyReservations);
+router.put('/:id/review', permit('customer'), requireFields('rating'), reviewReservation);
+router.put('/:id/status', requireFields('status'), updateReservationStatus);
+router.delete('/:id', permit('customer'), deleteReservation);
+export default router;

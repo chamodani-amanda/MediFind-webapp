@@ -1,0 +1,6 @@
+pharmacyId,pharmacyName,address,city,latitude,longitude,contactNumber,openingHours,rating,reviews,verified,ownerEmail
+PHA-ABC,ABC Pharmacy,"123 Main Street, Jaffna, Sri Lanka",Jaffna,9.6658,80.0216,+94 21 234 5678,Mon-Sun 6:00 AM-10:00 PM,4.7,128,true,pharmacy@medifind.lk
+PHA-HEALTH,HealthCare Pharmacy,"42 Hospital Road, Jaffna, Sri Lanka",Jaffna,9.6726,80.0288,+94 21 222 1098,Mon-Sun 7:00 AM-8:00 PM,4.5,96,true,pharmacy@medifind.lk
+PHA-CITY,City Pharmacy,"8 KKS Road, Jaffna, Sri Lanka",Jaffna,9.6564,80.0148,+94 21 555 1033,Mon-Sat 8:00 AM-7:00 PM,4.2,76,true,pharmacy@medifind.lk
+PHA-GREEN,Green Pharmacy,"16 Palaly Road, Jaffna, Sri Lanka",Jaffna,9.6782,80.0112,+94 21 700 9812,Mon-Sun 6:00 AM-10:00 PM,4.6,54,true,pharmacy@medifind.lk
+PHA-LIFE,LifePlus Pharmacy,"5 Stanley Road, Jaffna, Sri Lanka",Jaffna,9.6488,80.0329,+94 21 320 2244,Mon-Sun 7:00 AM-9:30 PM,4.4,88,true,pharmacy@medifind.lk

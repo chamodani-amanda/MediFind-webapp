@@ -1,0 +1,4 @@
+medicineId,name,genericName,category,dosage,form,manufacturer,description,requiresPrescription,quantity,unitPrice,currency,notes
+MED-PARA-500,Paracetamol,Acetaminophen,Pain Relief,500 mg,Tablet,State Pharmaceuticals,"Temporary relief of mild pain and fever",false,24,8.50,LKR,Available over the counter
+MED-AMOX-250,Amoxicillin,Amoxicillin,Antibiotic,250 mg,Capsule,Ceylon Pharma,"Prescription antibiotic for susceptible bacterial infections",true,15,22.00,LKR,Prescription must be checked at collection
+MED-CET-10,Cetirizine,Cetirizine Hydrochloride,Allergy,10 mg,Tablet,HealthCare Labs,"Antihistamine for common allergy symptoms",false,6,12.50,LKR,

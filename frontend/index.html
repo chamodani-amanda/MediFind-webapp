@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MediFind — find medicines, compare nearby pharmacies, and reserve for collection." />
+  <title>MediFind | Find care. Find relief.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css?v=20260923-39" />
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to main content</a>
+  <div id="toast" class="toast" role="status"></div>
+  <header id="header" class="site-header hidden">
+    <button class="brand" data-route="home" aria-label="MediFind home"><img src="assets/medifind-logo.png" alt="MediFind"></button>
+    <nav aria-label="Main navigation">
+      <button data-route="home">Home</button><button data-route="pharmacies">Pharmacies</button><button data-route="reservations">Reservations</button><button data-route="help">Help</button>
+    </nav>
+    <div class="header-actions"><button class="header-tool back-button" id="backButton" type="button" aria-label="Go back">← <span>Back</span></button><button class="header-tool text-size-toggle" type="button" aria-label="Change text size"><span aria-hidden="true">A</span> <span>Text size</span></button><button class="header-tool theme-toggle" type="button" aria-label="Switch color theme"><span aria-hidden="true">☾</span> <span>Dark</span></button><div class="language-switcher header-language" aria-label="Select language"><button data-lang="en">English</button><button data-lang="si">සිංහල</button><button data-lang="ta">தமிழ்</button></div><button class="icon-btn notification-btn" id="notificationBtn" aria-label="No new notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><b hidden></b></button><button class="profile-btn" data-route="profile"><span class="avatar">A</span><span class="profile-name">Amanda</span>⌄</button><button class="guest-signin btn" data-route="login">Sign in</button><button class="menu-btn" id="menuBtn">☰</button></div>
+  </header>
+  <main id="app" tabindex="-1"></main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <script src="app.js?v=20260923-41"></script>
+</body>
+</html>

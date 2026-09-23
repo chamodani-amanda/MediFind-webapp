@@ -1,0 +1,17 @@
+import { Router, text } from 'express';
+import { createPharmacy, deletePharmacyMedicine, getPharmacy, importPharmacyInventory, listPharmacies, nearbyPharmacies, ownerPharmacies, pharmacyImportHistory, updatePharmacy, updatePharmacyMedicine, updateStock } from '../controllers/pharmacyController.js';
+import { permit, protect } from '../middleware/auth.js';
+import { requireFields } from '../middleware/validate.js';
+const router = Router();
+router.get('/', listPharmacies);
+router.get('/nearby', nearbyPharmacies);
+router.get('/mine', protect, permit('pharmacyOwner', 'admin'), ownerPharmacies);
+router.post('/', protect, permit('pharmacyOwner', 'admin'), requireFields('pharmacyName', 'address', 'city', 'latitude', 'longitude', 'contactNumber', 'openingHours'), createPharmacy);
+router.post('/:id/import-inventory', protect, permit('pharmacyOwner', 'admin'), text({ type: ['text/csv', 'application/csv', 'text/plain'], limit: '5mb' }), importPharmacyInventory);
+router.get('/:id/import-history', protect, permit('pharmacyOwner', 'admin'), pharmacyImportHistory);
+router.get('/:id', getPharmacy);
+router.put('/:id', protect, permit('pharmacyOwner', 'admin'), updatePharmacy);
+router.put('/:id/stock', protect, permit('pharmacyOwner', 'admin'), requireFields('medicineId', 'quantity'), updateStock);
+router.put('/:id/medicines/:medicineId', protect, permit('pharmacyOwner', 'admin'), updatePharmacyMedicine);
+router.delete('/:id/medicines/:medicineId', protect, permit('pharmacyOwner', 'admin'), deletePharmacyMedicine);
+export default router;
